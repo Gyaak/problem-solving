@@ -24,8 +24,8 @@ public class Main {
         x = new double[3];
         y = new double[3];
         for(int i = 0; i<3; i++) {
-            double det = a[i]*b[(i+1)%3]-a[(i+1)%3]*b[i];
             int j = (i+1)%3;
+            double det = a[i]*b[j]-a[j]*b[i];
             x[i] = b[j]*c[i]-b[i]*c[j];
             x[i] /= det;
             y[i] = a[i]*c[j]-a[j]*c[i];
@@ -57,6 +57,7 @@ public class Main {
             answer.append("\n");
         }
         System.out.print(answer);
+        br.close();
     }
     
 }
