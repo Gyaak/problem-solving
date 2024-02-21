@@ -112,7 +112,7 @@ public class Main {
                         closed.add(new Node(curR,curC));
     
                 }
-                // 돈이나 빈 공간을 발견한 경우
+                // 문서나 빈 공간을 발견한 경우
                 else if (stat=='$' || stat=='.') {
                     if(stat == '$') cnt++;
                     q.add(new Node(curR, curC));
