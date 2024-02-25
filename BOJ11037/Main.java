@@ -1,58 +1,63 @@
 package BOJ11037;
 
 import java.io.*;
-import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
-    static ArrayList<Integer> notDuplicated;
-    static boolean[] check = new boolean[10];
 
-    static boolean DFS(int[] target, int idx) {
-        if(idx==target.length)
-            return true;
-        
-        if(!check[target[idx]]) {
-            check[target[idx]] = true;
-            if(DFS(target, idx+1)) {
-                return true;
-            }
-            check[target[idx]] = false;
-        }
-        for(int i = target[idx]+1; i<10; i++) {
-            if(!check[i]) {
-                check[i] = true;
-                target[idx] = i;
-                int cur = 1;
-                for(int j = idx+1; j<target.length; j++) {
-                    while(cur<10 && check[cur])   cur++;
-                    target[j] = cur;
-                    check[cur] = true;
-                }
-                return true;
-            }
-        }
-        return false;
+    static int val(int[] arr) {
+        int v = 0;
+        for(int n : arr)
+            v = 10*v+n;
+        return v;
     }
 
     static int findNum(int[] target) {
-        if(target.length>9)
-            return 0;
-        Arrays.fill(check, false);
-        check[0] = true;
-        int result = 0;
-        if(DFS(target, 0)) {
-            for(int i : target) {
-                result *= 10;
-                result += i;
+        int[] check = new int[10];
+        // 0을 포함하면 안되므로, 0은 무조건 중복처리
+        check[0] = 1;
+        int cur;
+        for(cur = 0; cur<target.length; cur++) {
+            check[target[cur]]++;
+            if(check[target[cur]]>1) {
+                break;
             }
-        } else {
-            for(int i = 1; i<=target.length+1;i++) {
-                result *= 10;
-                result += i;
-            } 
         }
-        return result;
+
+        // 이미 중복 없는 수인 경우 바로 반환
+        if(cur==target.length) {
+            return val(target);
+        }
+
+        // 바꿀 수 있는 자리수까지 앞으로 이동
+        while(cur>=0) {
+            check[target[cur]]--;
+            for(int i = target[cur]+1; i<10; i++) {
+                if(check[i]==0) {
+                    check[i]++;
+                    // 바꿀 수 있는 수가 있으면 바꾸고
+                    target[cur] = i;
+                    int n = 0;
+                    // 그 뒤 자리수는 작은 수부터 중복없이 채워 넣기
+                    for(int j = cur+1; j<target.length; j++) {
+                        while(check[n]>0)
+                            n++;
+                        check[n]++;
+                        target[j] = n;
+                    }
+                    return val(target);
+                }
+            }
+            cur--;
+        }
+
+        // 자리수가 늘어나는 경우
+        int num = 0;
+        for(int i = 1; i<=target.length+1; i++) {
+            num *= 10;
+            num += i;
+        }
+        return num;
     }
 
     public static void main(String[] args) throws IOException {
@@ -61,13 +66,17 @@ public class Main {
         StringBuilder ans = new StringBuilder("");
         String inputString = "";
         while((inputString = br.readLine()) != null && !inputString.isEmpty()) {
-            // 주어진 수보다 '큰' 중복되지 않은 수를 찾아야함..
+            // 주어진 수보다 '큰' 중복 없는 수를 찾아야함..
             int targetVal = Integer.parseInt(inputString) + 1;
-            
-            int[] target = Stream.of(String.valueOf(targetVal).split(""))
-                                 .mapToInt(Integer::parseInt)
-                                 .toArray();
-            ans.append(findNum(target)+"\n");
+            // 가장 큰 중복 없는 수는 987654321
+            if(targetVal>987654321) {
+                ans.append("0\n");
+            } else {
+                int[] target = Stream.of(String.valueOf(targetVal).split(""))
+                                    .mapToInt(Integer::parseInt)
+                                    .toArray();
+                ans.append(findNum(target)+"\n");
+            }
         }   
         System.out.print(ans);
     }
