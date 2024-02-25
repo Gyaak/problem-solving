@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
-    static ArrayList<Integer> notDuplicated;
     static boolean[] check = new boolean[10];
 
     static boolean DFS(int[] target, int idx) {
