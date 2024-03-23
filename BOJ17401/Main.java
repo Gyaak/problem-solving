@@ -51,17 +51,6 @@ public class Main {
             M2[0][i][i] = 1;
         }
 
-        if(D==0) {
-            StringBuilder sb = new StringBuilder("");
-            for(int i = 0; i<N; i++) {
-                for(int j = 0; j<N; j++)
-                    sb.append("0 ");
-                sb.append("\n");
-            }
-            System.out.print(sb);
-            return;
-        }
-
         M1[1] = M[1];
         for(int i = 2; i<=T; i++) {
             M1[i] = matrixMultiply(M1[i-1], M[i]);
