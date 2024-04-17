@@ -35,11 +35,21 @@ public class Main {
             xSet.add(x);
             ySet.add(y);
         }
+        Arrays.sort(trees,(i,j)->(j.len-i.len));
         xList = new ArrayList<>(xSet);
         yList = new ArrayList<>(ySet);
         Collections.sort(xList);
         Collections.sort(yList);
         br.close();
+    }
+
+    static boolean isValid(int x1, int x2, int y1, int y2, Tree target) {
+        if(xList.get(x1)<=target.x && target.x <=xList.get(x2) && yList.get(y1)<=target.y && target.y<=yList.get(y2)) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     static int solve() {
@@ -51,22 +61,20 @@ public class Main {
                     for(int y2 = y1; y2<yList.size(); y2++) {
                         int dist = 2*(xList.get(x2)-xList.get(x1)+yList.get(y2)-yList.get(y1));
                         int tmpNum = 0;
-                        List<Integer> tmpList = new ArrayList<>();
                         for(int i = 0; i<N; i++) {
-                            if(xList.get(x1)<=trees[i].x && trees[i].x <=xList.get(x2) && yList.get(y1)<=trees[i].y && trees[i].y<=yList.get(y2)) {
-                                tmpList.add(trees[i].len);
-                            } else {
+                            if(!isValid(x1, x2, y1, y2, trees[i])) {
                                 dist -= trees[i].len;
                                 tmpNum++;
                             }
                         }
-                        Collections.sort(tmpList,Comparator.reverseOrder());
-                        for(int d : tmpList) {
-                            if(dist<=0) break;
-                            dist -= d;
-                            tmpNum++;
-                        }
-
+                        for(int i = 0; i<N; i++) {
+                            if(isValid(x1, x2, y1, y2, trees[i])) {
+                                if(dist<=0)
+                                    break;
+                                dist -= trees[i].len;
+                                tmpNum++;
+                            }
+                        } 
                         num = Math.min(num,tmpNum);
                     }
                 }
