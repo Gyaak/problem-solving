@@ -6,7 +6,7 @@ import java.util.*;
 public class Main {
 
     static int N, ans;
-    static int[] T, P;
+    static int[] T, P, cache;
     static boolean[] visited = new boolean[15];
 
     static void setInput() throws IOException {
@@ -14,6 +14,8 @@ public class Main {
         N = Integer.parseInt(br.readLine());
         T = new int[N];
         P = new int[N];
+        cache = new int[N];
+        Arrays.fill(cache, -1);
 
         StringTokenizer st;
         for(int i = 0; i<N; i++) {
@@ -25,6 +27,7 @@ public class Main {
         br.close();
     }
 
+    // brute-force
     static void DFS(int idx, int val) {
         if(idx<=N) {
             ans = Math.max(ans, val);
@@ -37,9 +40,26 @@ public class Main {
         }
     }
 
+    // DP
+    static int Cache(int n) {
+        if(n<0) return 0;
+        if(cache[n]==-1) {
+            cache[n] = 0;
+            for(int i = 0; i<=n; i++) {
+                int tmp = Cache(i-1);
+                if(i+T[i]-1==n) {
+                    tmp += P[i];
+                }
+                cache[n] = Math.max(cache[n], tmp);
+            }
+        }
+        return cache[n];
+    }
+
     public static void main(String[] args) throws IOException {
         setInput();
-        DFS(0,0);
+        //DFS(0,0);
+        ans = Cache(N-1);
         System.out.println(ans);
     }
 }
