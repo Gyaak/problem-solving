@@ -1,7 +1,6 @@
 package BOJ10993;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class Main {
 
