@@ -18,7 +18,7 @@ public class Main {
                 for(int j = 0; j<W; j++) {
                     if(i==0 || i==j || i+j==W-1)
                         board[r+i][c+j] = '*';
-                    else
+                    else if(i+j<=W)
                         board[r+i][c+j] = ' ';
                 }
             }
@@ -28,7 +28,7 @@ public class Main {
                 for(int j = 0; j<W; j++) {
                     if(i==H-1 || j-i==W-H || i+j==H-1)
                         board[r+i][c+j] = '*';
-                    else
+                    else if(j-i<=W-H)
                         board[r+i][c+j] = ' ';
                 }
             }
@@ -45,21 +45,14 @@ public class Main {
         int W = (1<<(n+1))-3;
         board = new char[H][W];
         draw(n, 0, 0);
-        if(n%2==0) {
-            for(int i = 0; i<H; i++) {
-                for(int j = 0; j<W; j++)
-                    if(i+j<=W)
-                        bw.write(board[i][j]);
-                bw.write("\n");    
+        for(int i = 0; i<H; i++) {
+            for(int j = 0; j<W; j++) {
+                if(board[i][j]=='\u0000')   break;
+                bw.write(board[i][j]);
             }
-        } else {
-            for(int i = 0; i<H; i++) {
-                for(int j = 0; j<W; j++)
-                    if(j-i<=W-H)
-                        bw.write(board[i][j]);
-                bw.write("\n");    
-            }
+            bw.write("\n");    
         }
+
         bw.flush();
         bw.close();
         br.close();
