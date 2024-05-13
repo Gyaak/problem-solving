@@ -59,18 +59,24 @@ public class Main {
         while(!pq.isEmpty()) {
             int curNum = pq.peek().first;
             double curDist = pq.poll().second;
+            
             if(curNum==N-1)
                 return (int)(1000*curDist);
+                
+            // 사전에 연결되어있다면, 거리를 그대로 탐색
             for(int p : connections[curNum]) {
-                if(!visited[p])
+                if(!visited[p]) {
                     pq.add(new Pair(p, curDist));
                     visited[p] = true;
+                }
             }
+            
             for(int i = 0; i<N; i++) {
                 if(!visited[i]) {
                     double tmpDist = findDist(plants[curNum], plants[i]);
+                    // 방문한적 없고, 발전소간의 거리가 M이하인 경우만 탐색
                     if(tmpDist<=M)
-                    pq.add(new Pair(i, curDist+tmpDist));
+                        pq.add(new Pair(i, curDist+tmpDist));
                 }
             }
             visited[curNum] = true;
