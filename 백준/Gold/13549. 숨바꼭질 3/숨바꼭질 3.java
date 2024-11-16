@@ -30,28 +30,29 @@ public class Main {
         dq.add(new Node(N,0));
 
         while(!dq.isEmpty()) {
-            Node curNode = dq.pollFirst();
-            if(curNode.idx == K) {
-                return curNode.dist;
+            int idx = dq.peekFirst().idx;
+            int dist = dq.pollFirst().dist;
+            if(idx == K) {
+                return dist;
             }
 
-            if(visited[curNode.idx]) {
+            if(visited[idx]) {
                 continue;
             } else {
-                visited[curNode.idx] = true;
+                visited[idx] = true;
             }
 
-            int tmpIdx = curNode.idx * 2;
+            int tmpIdx = idx * 2;
             if(tmpIdx <= MAX && !visited[tmpIdx]) {
-                dq.addFirst(new Node(tmpIdx, curNode.dist));
+                dq.addFirst(new Node(tmpIdx, dist));
             }
-            tmpIdx = curNode.idx + 1;
+            tmpIdx = idx + 1;
             if(tmpIdx <= MAX && !visited[tmpIdx]) {
-                dq.addLast(new Node(tmpIdx, curNode.dist + 1));
+                dq.addLast(new Node(tmpIdx, dist + 1));
             }
-            tmpIdx = curNode.idx - 1;
+            tmpIdx = idx - 1;
             if(tmpIdx >= 0 && !visited[tmpIdx]) {
-                dq.addLast(new Node(tmpIdx, curNode.dist + 1));
+                dq.addLast(new Node(tmpIdx, dist + 1));
             }
         }
         return -1;
