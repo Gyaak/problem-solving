@@ -34,18 +34,18 @@ public class Main {
     }
 
     static int solve() {
-        PriorityQueue<Node> pq = new PriorityQueue<>((n1, n2)-> n1.cnt - n2.cnt);
+        Queue<Node> q = new ArrayDeque<>();
 
-        pq.add(new Node(0,0));
+        q.add(new Node(0,0));
         visited[0] = true;
-        while(!pq.isEmpty()) {
-            Node curNode = pq.poll();
+        while(!q.isEmpty()) {
+            Node curNode = q.poll();
             for(int i = 1; i<=6; i++) {
                 int newPos = graph[curNode.pos + i] != -1 ? graph[curNode.pos + i] : curNode.pos + i;
                 if(visited[newPos]) continue;
                 if(newPos == 99)    return curNode.cnt + 1;
                 
-                pq.add(new Node(newPos, curNode.cnt + 1));
+                q.add(new Node(newPos, curNode.cnt + 1));
                 visited[newPos] = true;
             }
         }
